@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Special Moments ❤️</title>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<style>
+body{
+    margin:0;
+    padding:0;
+    height:100vh;
+    overflow:hidden;
+    background:black;
+    font-family:'Segoe UI',sans-serif;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    perspective:1200px;
+    color:white;
+}
+
+/* Gallery Container */
+.gallery{
+    width:400px;
+    height:500px;
+    position:relative;
+    transform-style:preserve-3d;
+    transition:1s;
+}
+
+.card{
+    position:absolute;
+    width:100%;
+    height:100%;
+    backface-visibility:hidden;
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:0 0 25px pink;
+}
+
+.card img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.back{
+    background:linear-gradient(135deg,#ff4da6,#ff0066);
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    transform:rotateY(180deg);
+}
+
+.back h1{
+    font-size:40px;
+    animation:glow 1.5s infinite alternate;
+}
+
+@keyframes glow{
+    from{ text-shadow:0 0 10px white; }
+    to{ text-shadow:0 0 30px yellow; }
+}
+
+button{
+    padding:10px 25px;
+    margin:15px;
+    border:none;
+    border-radius:25px;
+    cursor:pointer;
+    font-size:18px;
+}
+
+#yes{
+    background:white;
+    color:black;
+}
+
+#no{
+    background:black;
+    color:white;
+    position:relative;
+}
+
+/* Fireworks */
+.firework{
+    position:absolute;
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    animation:explode 1s ease-out forwards;
+}
+
+@keyframes explode{
+    to{
+        transform:translate(var(--x),var(--y));
+        opacity:0;
+    }
+}
+</style>
+</head>
+
+<body>
+
+
+    <!-- for audio -->
+    <audio id="bgMusic" loop>
+    <source src="music.mp3" type="audio/mp3">
+</audio>
+
+<div class="gallery">
+    <div class="card front">
+        <img src="img.jpg">
+    </div>
+    <div class="card back">
+        <h1>Will You Be Mine Forever? ❤️</h1>
+        <button id="yes">Yes 💍</button>
+        <button id="no">No 😜</button>
+    </div>
+</div>
+
+<script>
+
+const music = document.getElementById("bgMusic");
+
+/* Play music on first click anywhere */
+document.addEventListener("click", function() {
+    music.play();
+}, { once: true });
+
+
+
+let current = 1;
+
+/* Auto Slide Images */
+setInterval(function(){
+    if(current < 4){
+        $('.front img').attr('src','images.jpeg');
+        current++;
+    } else {
+        $('.gallery').css('transform','rotateY(180deg)');
+    }
+},3000);
+
+/* YES Click */
+$('#yes').click(function(){
+    $('body').html("<h1 style='font-size:60px; color:pink; text-align:center;'>  ❤️I Love You Forever Shivangi Bebu ❤️</h1>");
+    launchFireworks();
+});
+
+/* NO Button Animation */
+$('#no').hover(function(){
+    $(this).animate({
+        left: Math.random()*200 - 100,
+        top: Math.random()*200 - 100
+    },300);
+});
+
+/* Fireworks */
+function launchFireworks(){
+    setInterval(()=>{
+        for(let i=0;i<100;i++){
+            let firework=document.createElement("div");
+            firework.classList.add("firework");
+            firework.style.left=Math.random()*window.innerWidth+"px";
+            firework.style.top=Math.random()*window.innerHeight+"px";
+
+            let colors=["#ff4da6","#ffcc00","#00ffff","#ffffff"];
+            firework.style.background=colors[Math.floor(Math.random()*colors.length)];
+
+            let x=(Math.random()-0.5)*400+"px";
+            let y=(Math.random()-0.5)*400+"px";
+            firework.style.setProperty('--x',x);
+            firework.style.setProperty('--y',y);
+
+            document.body.appendChild(firework);
+            setTimeout(()=>firework.remove(),1000);
+        }
+    },800);
+}
+
+</script>
+
+</body>
+</html>
